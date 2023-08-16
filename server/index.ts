@@ -10,9 +10,13 @@ import SocketServer from './SocketServer';
 import AllowedOrigins from './src/Origins';
 import BlogRouter from './src/routes/blogRouter';
 import { errorMiddleware, notFound } from './src/middlewares/ErrorMiddleware';
+import https from 'https';
+import cron from 'node-cron'; // Import the node-cron library
+
 const app = express();
 const PORT = config.PORT;
 const http = createServer(app);
+
 app.use(
   cors({
     origin: config.Client_URL,
@@ -28,6 +32,11 @@ mongoose
     http.listen(PORT, () => {
       console.log(`Successfully started at http://localhost:${PORT}`);
     });
+
+    // Schedule the cron job to run every 14 minutes
+    cron.schedule('*/14 * * * *', () => {
+      console.log('Running cron job...'); // You can replace this with your desired task
+    });
   })
   .catch((err: Error) => {
     console.log(err);
@@ -39,9 +48,11 @@ const io = new Server(http, {
     credentials: true,
   },
 });
+
 io.on('connection', (socket: Socket) => {
   SocketServer(socket);
 });
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/api/blog', BlogRouter);
