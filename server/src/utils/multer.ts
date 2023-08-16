@@ -18,7 +18,7 @@ const storage = multer.memoryStorage(); // Use MemoryStorage
 // });
 const fileFilter = (
   req: Request,
-  file: Express.Multer.File,
+  file,
   cb: multer.FileFilterCallback,
 ) => {
   if (
