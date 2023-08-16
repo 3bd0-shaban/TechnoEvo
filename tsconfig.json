@@ -11,6 +11,7 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "allowJs": true,
+    "types": ["node", "@types"],
     "typeRoots": ["./server/src/types", "./node_modules/@types"],
     "baseUrl": "server/src",
     "paths": {
