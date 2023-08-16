@@ -1,10 +1,10 @@
-import { iBlog } from '@/models';
 import { getAllBlogs } from '@/services/blogApi'
+import { iBlog, iBlogResponse } from '@/types/iBlog';
 import fs from 'fs';
 import RSS from 'rss';
 const url = process.env.NEXT_PUBLIC_Client_URL
 export async function GET() {
-    const blogData: iBlog[] = await getAllBlogs();
+    const blogData: iBlogResponse = await getAllBlogs();
     const feed = new RSS({
         title: "TechnoEvo",
         description: "Welcome to this blog posts!",
@@ -18,7 +18,7 @@ export async function GET() {
         copyright: `All rights reserved ${new Date().getFullYear()}`,
         language: 'en',
     });
-    blogData.forEach(item => {
+    blogData.blogs.forEach(item => {
         feed.item({
             title: item.title,
             guid: `${url}/blog/${item.url}`,

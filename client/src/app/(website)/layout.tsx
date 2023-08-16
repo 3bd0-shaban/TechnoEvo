@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import { iBlog } from '@/models'
 import Link from 'next/link'
 import { RecentData } from '@/components/parts/RecentBlogs'
+import { iBlog } from '@/types/iBlog'
 const url = process.env.NEXT_PUBLIC_Server_APi
 
 export const metadata: Metadata = {

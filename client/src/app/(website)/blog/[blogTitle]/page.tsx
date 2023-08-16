@@ -1,5 +1,5 @@
-import { iBlog } from '@/models'
 import { getDataById } from '@/services/blogApi';
+import { iBlog } from '@/types/iBlog';
 import Image from 'next/image';
 
 export default async function Home({ params }: { params: { blogTitle: string } }) {

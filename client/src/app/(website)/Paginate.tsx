@@ -1,5 +1,4 @@
 'use client';
-import { iBlog } from '@/models';
 import { getAllBlogs } from '@/services/blogApi';
 import { iBlogResponse } from '@/types/iBlog';
 import { FC, useState } from 'react'
