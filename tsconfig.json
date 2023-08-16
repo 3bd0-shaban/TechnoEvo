@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "commonjs",
+    "lib": ["es6", "DOM"],
+    "outDir": "./dist/",
+    "rootDir": "server",
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "allowJs": true,
+    "typeRoots": ["./server/src/types", "./node_modules/@types"],
+    "baseUrl": "server/src",
+    "paths": {
+      "@models/*": ["models/*"],
+      "@controllers/*": ["controllers/*"],
+      "@routes/*": ["routes/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@utils/*": ["utils/*"]
+    }
+  },
+  "include": ["server/**/*.ts", "server/src/**/*.ts", "server/*.ts"],
+  "exclude": ["node_modules"]
+}
