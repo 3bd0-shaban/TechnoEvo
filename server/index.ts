@@ -10,8 +10,7 @@ import SocketServer from './SocketServer';
 import AllowedOrigins from './src/Origins';
 import BlogRouter from './src/routes/blogRouter';
 import { errorMiddleware, notFound } from './src/middlewares/ErrorMiddleware';
-import https from 'https';
-import cron from 'node-cron'; // Import the node-cron library
+import cron from 'node-cron';
 
 const app = express();
 const PORT = config.PORT;
