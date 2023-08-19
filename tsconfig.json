@@ -1,26 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES5",
     "module": "commonjs",
-    "lib": ["es6", "DOM"],
-    "outDir": "./dist/",
-    "rootDir": "server",
     "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
     "skipLibCheck": true,
-    "allowJs": true,
-    "typeRoots": ["./server/src/types", "./node_modules/@types"],
-    "baseUrl": "server/src",
-    "paths": {
-      "@models/*": ["models/*"],
-      "@controllers/*": ["controllers/*"],
-      "@routes/*": ["routes/*"],
-      "@middlewares/*": ["middlewares/*"],
-      "@utils/*": ["utils/*"]
-    }
-  },
-  "include": ["server/**/*.ts", "server/src/**/*.ts", "server/*.ts"],
-  "exclude": ["node_modules"]
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
+  }
 }
