@@ -1,35 +1,90 @@
+import cluster from 'node:cluster';
+import path from 'path';
+
+import {
+  HttpStatus,
+  Logger,
+  UnprocessableEntityException,
+  ValidationPipe,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { NestFastifyApplication } from '@nestjs/platform-fastify';
+
+import { useContainer } from 'class-validator';
+
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import type { ConfigKeyPaths } from './config';
+import { isDev } from './global/env';
+import { setupSwagger } from './setup-swagger';
+import * as cookieParser from 'cookie-parser';
+import * as morgan from 'morgan';
+
+declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, {
+    bufferLogs: true,
+    snapshot: true,
+    // forceCloseConnections: true,
+  });
 
-  // ... (ValidationPipe and other configuration)
+  const configService = app.get(ConfigService<ConfigKeyPaths>);
+  app.use(morgan('dev'));
+  app.use(cookieParser());
 
-  const config = new DocumentBuilder()
-    .setTitle('TechnoEvo')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addTag('evo')
-    .build();
+  // const { port, globalPrefix } = configService.get('app', { infer: true });
 
-  const document = SwaggerModule.createDocument(app, config);
+  // class-validator 的 DTO 类中注入 nest 容器的依赖 (用于自定义验证器)
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  // Customizing Swagger UI
-  const options = {
-    customCss: '.swagger-ui .topbar { background-color: #333; }', // Example of custom CSS
-    customJs: '/custom.js', // Example of including custom JavaScript
-    swaggerOptions: {
-      docExpansion: 'list', // Controls the initial expansion state of the doc tree
-    },
-  };
+  app.enableCors({
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    credentials: true,
+  });
+  app.setGlobalPrefix('api');
+  // app.useStaticAssets({ root: path.join(__dirname, '..', 'public') });
+  // Starts listening for shutdown hooks
+  !isDev && app.enableShutdownHooks();
 
-  SwaggerModule.setup('docs', app, document, options);
+  if (isDev) app.useGlobalInterceptors(new LoggingInterceptor());
 
-  await app.listen(5000);
-  console.log(`Application listening on port: ${5000}`);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      transformOptions: { enableImplicitConversion: true },
+      forbidNonWhitelisted: true,
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      stopAtFirstError: true,
+      exceptionFactory: (errors) =>
+        new UnprocessableEntityException(
+          errors.map((e) => {
+            const rule = Object.keys(e.constraints!)[0];
+            const msg = e.constraints![rule];
+            return msg;
+          })[0],
+        ),
+    }),
+  );
+
+  setupSwagger(app, configService);
+
+  await app.listen(5000, '0.0.0.0', async () => {
+    const url = await app.getUrl();
+
+    const logger = new Logger('NestApplication');
+    logger.log(` Server running on ${url}`);
+
+    if (isDev) logger.log(` OpenAPI: ${url}/api-docs`);
+  });
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 
 bootstrap();

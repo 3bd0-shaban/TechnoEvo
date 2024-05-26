@@ -1,5 +1,0 @@
-# render.yaml
-services:
-  - name: api.Techno-Evo
-    buildCommand: npm run build
-    startCommand: npm start
