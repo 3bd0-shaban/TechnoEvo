@@ -10,20 +10,13 @@ export enum ErrorEnum {
   ILLEGAL_OPERATION_DIRECTORY_PARENT = '1006: Illegal operation: This node only supports directory type parent node',
   ILLEGAL_OPERATION_CANNOT_CONVERT_NODE_TYPE = '1007: Illegal operation: Node type cannot be directly converted',
   ROLE_HAS_ASSOCIATED_USERS = '1008: The role has associated users, please delete the associated users first',
-  DEPARTMENT_HAS_ASSOCIATED_USERS = '1009: The department has associated users, please delete the associated users first',
-  DEPARTMENT_HAS_ASSOCIATED_ROLES = '1010: The department has associated roles, please delete the associated roles first',
+
   PASSWORD_MISMATCH = '1011: Old password does not match original password',
   LOGOUT_OWN_SESSION = '1012: If you want to log out yourself, please click on the logout option in the upper right corner',
   NOT_ALLOWED_TO_LOGOUT_USER = '1013: Not allowed to log out this user',
   PARENT_MENU_NOT_FOUND = '1014: Parent menu not found',
-  DEPARTMENT_HAS_CHILD_DEPARTMENTS = '1015: The department has child departments, please delete the child departments first',
-  SYSTEM_BUILTIN_FUNCTION_NOT_ALLOWED = '1016: System built-in function is not allowed to operate',
   USER_NOT_FOUND = '1017: User not found',
-  UNABLE_TO_FIND_DEPARTMENT_FOR_USER = '1018: Unable to find the department to which the current user belongs',
   DEPARTMENT_NOT_FOUND = '1019: Department not found',
-  DICT_NAME_EXISTS = '1020: A dictionary with the same name already exists',
-  PARAMETER_CONFIG_KEY_EXISTS = '1021: Parameter configuration key-value pair already exists',
-  DEFAULT_ROLE_NOT_FOUND = '1022: The default role assigned does not exist',
 
   INVALID_LOGIN = '1101: Invalid login, please log in again',
   NO_PERMISSION = '1102: No permission to access',
@@ -59,7 +52,20 @@ export enum ErrorEnum {
   SEO_ALREADY_EXIST = '1407: Seo configuration already exist for this country!',
   SEO_NOT_EXIST = '1408: Seo is not exist',
 
-  //BLOG
-  COMMENT_ALREADY_EXIST = '1407: Comment Not Founded',
-  COMMENT_NOT_EXIST = '1408: Comment Already Exists',
+  //Comment
+  COMMENT_ALREADY_EXIST = '1409: Comment Not Founded',
+  COMMENT_NOT_EXIST = '1410: Comment Already Exists',
+
+  //Replay
+  REPLAY_ALREADY_EXIST = '1411: Replay Not Founded',
+  REPLAY_NOT_EXIST = '1412: Replay Already Exists',
+
+  //Contact us
+  CONTACTUS_ALREADY_EXIST = '1413: Contact us message Not Founded',
+  CONTACTUS_NOT_EXIST = '1414: contact us message Already Exists',
+
+  //Contact us
+  BANNER_ALREADY_EXIST = '1415: banner Not Founded',
+  BANNER_NOT_EXIST = '1416: banner Already Exists',
+  MIXIMUM_BANNERS = '1417: Can not have more than 6 banners , please remove one before proceeding',
 }

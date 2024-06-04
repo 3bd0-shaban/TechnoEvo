@@ -4,6 +4,7 @@ import { CommonEntity } from '~/common/entity/common.entity';
 import { LogEntity } from '~/modules/log/entities/log.entity';
 import { USER_ROLES_ENUMS } from '../user.constant';
 import { CommentEntity } from '~/modules/comment/entities/comment.entity';
+import { BannerEntity } from '~/modules/banner/entities/banner.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity extends CommonEntity {
@@ -35,6 +36,9 @@ export class UserEntity extends CommonEntity {
 
   @OneToMany((type) => CommentEntity, (comment) => comment.user)
   comments: CommentEntity[];
+
+  @OneToMany((type) => BannerEntity, (banner) => banner.created_By)
+  banners: BannerEntity[];
 
   @OneToMany(() => LogEntity, (log) => log.id)
   logs: LogEntity;
