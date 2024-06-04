@@ -25,9 +25,9 @@ import { ContactUsModule } from './modules/contact-us/contact-us.module';
       isGlobal: true,
       expandVariables: true,
       envFilePath: [
-        '.env.development',
+        // '.env.development',
         // '.env.production',
-        // `.env.${process.env.NODE_ENV}`,
+        `.env.${process.env.NODE_ENV}`,
         '.env',
       ],
       load: [...Object.values(config)],
