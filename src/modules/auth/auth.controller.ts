@@ -22,6 +22,7 @@ import { VerifyOTPDTOs } from '~/modules/user/dto/verify-otp.dto';
 import { CurrentUser } from './decorator/auth-user.decorator';
 import { UserEntity } from '~/modules/user/entities/user.entity';
 import { JwtUserGuard } from './guards/jwt-auth.guard';
+import { USER_ROLES_ENUMS } from '../user/user.constant';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -34,7 +35,7 @@ export class UserAuthController {
 
   @Post('register')
   async Signup(@Body() createUserDTO: CreateUserDTO) {
-    return await this.userService.create(createUserDTO);
+    return await this.userService.create(createUserDTO, USER_ROLES_ENUMS.User);
   }
   @Post('verify')
   @ApiBearerAuth()

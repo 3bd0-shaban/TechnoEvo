@@ -17,6 +17,7 @@ import { PasswordUpdateDto } from '~/shared/dto/inputs/password.dto';
 import { randomValue } from '~/utils/tool.util';
 import { EmailService } from '~/shared/mailer/mailer.service';
 import { VerifyOTPDTOs } from './dto/verify-otp.dto';
+import { USER_ROLES_ENUMS } from './user.constant';
 
 @Injectable()
 export class UserService {
@@ -31,10 +32,14 @@ export class UserService {
    * Compare entered and database passwords
    *
    * @param {CreateUserDTO} createUserDto - enterted inputs
+   * @param {USER_ROLES_ENUMS} role - user role  (Admin , User)
    * @returns {Promise<UserEntity>} - Password match result
    * @memberof UserService
    */
-  async create(createUserDto: CreateUserDTO): Promise<UserEntity> {
+  async create(
+    createUserDto: CreateUserDTO,
+    role: USER_ROLES_ENUMS,
+  ): Promise<UserEntity> {
     const { email, phone, code } = createUserDto;
     const exists = await this.userRepository.findOneBy({
       email,
@@ -57,6 +62,7 @@ export class UserService {
     const user = this.userRepository.create({
       ...createUserDto,
       otp,
+      role,
       password: hashedPassword,
       phone: formattedPhoneNumber,
     });

@@ -25,10 +25,14 @@ export class BlogService {
    * Create New blog
    *
    * @param {CreateBlogDto} inputs - entered inputs
+   * @param {string} thumbnail_Url - image thumbnail url
    * @returns {Promise<BlogEntity>} - Created blog entity
    * @memberof blogservice
    */
-  async create(inputs: CreateBlogDto): Promise<BlogEntity> {
+  async create(
+    inputs: CreateBlogDto,
+    thumbnail_Url: string,
+  ): Promise<BlogEntity> {
     const { blog_Title, categories: categorieIds } = inputs;
 
     const exists = await this.blogRepository.findOneBy({
@@ -46,6 +50,7 @@ export class BlogService {
     const blog = this.blogRepository.create({
       ...inputs,
       categories: genres,
+      thumbnail_Url,
     });
 
     return this.blogRepository.save(blog);

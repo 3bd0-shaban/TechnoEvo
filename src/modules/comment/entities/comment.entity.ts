@@ -2,7 +2,7 @@ import { Entity, Column, JoinTable, ManyToOne } from 'typeorm';
 import { CommonEntity } from '~/common/entity/common.entity';
 import { BlogEntity } from '~/modules/blog/entities/blog.entity';
 import { UserEntity } from '~/modules/user/entities/user.entity';
-import { ReplyEntity } from '~/reply/entities/reply.entity';
+import { ReplyEntity } from '~/modules/reply/entities/reply.entity';
 
 @Entity({ name: 'comments' })
 export class CommentEntity extends CommonEntity {
@@ -16,7 +16,7 @@ export class CommentEntity extends CommonEntity {
   dislikes?: string;
 
   @ManyToOne((type) => ReplyEntity, (reply) => reply.comment)
-  replies: string;
+  replies?: string;
 
   @ManyToOne((type) => UserEntity, (user) => user.comments)
   @JoinTable()

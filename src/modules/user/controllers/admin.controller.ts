@@ -15,9 +15,11 @@ import { CreateUserDTO } from '~/modules/user/dto/create-user.dto';
 import { PaginationArgs } from '~/shared/dto/args/pagination-query.args';
 import { UserEntity } from '../entities/user.entity';
 import { updateUserDTO } from '~/modules/user/dto/update-user.dto';
-import { DashboardGuard } from '../../auth/guards/dashboard.guard';
 import { PasswordUpdateDto } from '~/shared/dto/inputs/password.dto';
 import { LogService } from '../../log/log.service';
+import { USER_ROLES_ENUMS } from '../user.constant';
+import { AdminGuard } from '~/modules/auth/guards/admin.guard';
+import { JwtUserGuard } from '~/modules/auth/guards/jwt-auth.guard';
 
 @ApiTags('Admin Control - Dashboard Manpulation')
 @ApiBearerAuth()
@@ -29,13 +31,18 @@ export class AdminController {
   ) {}
 
   @Post('create-user')
-  @UseGuards(DashboardGuard)
-  create(@Body() createUserDto: CreateUserDTO) {
-    return this.userService.create(createUserDto);
+  @UseGuards(JwtUserGuard, AdminGuard)
+  createUser(@Body() createUserDto: CreateUserDTO) {
+    return this.userService.create(createUserDto, USER_ROLES_ENUMS.User);
+  }
+
+  @Post('create-admin')
+  createAdmin(@Body() createUserDto: CreateUserDTO) {
+    return this.userService.create(createUserDto, USER_ROLES_ENUMS.Admin);
   }
 
   @Get('all-users')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async findAll(
     @Query() query: PaginationArgs,
   ): Promise<{ users: UserEntity[]; total: number }> {
@@ -43,13 +50,13 @@ export class AdminController {
   }
 
   @Get('get-by-id/:id')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   findOne(@Param('id') id: number): Promise<UserEntity> {
     return this.userService.findOne(id);
   }
 
   @Put('update-by-id/:id')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async update(
     @Param('id') id: number,
     @Body() updateUserDto: updateUserDTO,
@@ -59,7 +66,7 @@ export class AdminController {
   }
 
   @Put('update-by-id/:id/password')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async updatePassword(
     @Param('id') id: number,
     @Body() inputs: PasswordUpdateDto,
@@ -69,7 +76,7 @@ export class AdminController {
   }
 
   @Delete('delete-by-id/:id')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   remove(@Param('id') id: number): Promise<void> {
     return this.userService.removeById(id);
   }

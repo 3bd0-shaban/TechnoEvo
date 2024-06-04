@@ -73,7 +73,7 @@ export class AuthService {
     if (user) {
       return user;
     }
-
+    console.log(user);
     throw new NotFoundException(
       'No authentication user founded, please logging in first',
     );

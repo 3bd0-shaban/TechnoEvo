@@ -12,7 +12,6 @@ import {
 import { SeoService } from './seo.service';
 import { CreateSeoDto } from './dto/create-seo.dto';
 import { UpdateSeoDto } from './dto/update-seo.dto';
-import { DashboardGuard } from '../auth/guards/dashboard.guard';
 import { PaginationArgs } from '~/shared/dto/args/pagination-query.args';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SeoEntity } from './entities/seo.entity';
@@ -21,6 +20,8 @@ import { CurrentUser } from '../auth/decorator/auth-user.decorator';
 import { SeoWebsitePages } from './dto/args/seo-query.args';
 import { SeoAnalyticsService } from '../analytics/seo-analytics/seo-analytics.service';
 import { UserEntity } from '../user/entities/user.entity';
+import { AdminGuard } from '../auth/guards/admin.guard';
+import { JwtUserGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Seo')
 @ApiBearerAuth()
@@ -33,7 +34,7 @@ export class SeoController {
   ) {}
 
   @Post()
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async create(
     @Body() CreateMovieDto: CreateSeoDto,
     @CurrentUser() user: UserEntity,
@@ -46,7 +47,7 @@ export class SeoController {
   }
 
   @Get()
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async findAll(
     @Query() query: PaginationArgs,
   ): Promise<{ seos: SeoEntity[]; results: number; total: number }> {
@@ -54,7 +55,7 @@ export class SeoController {
   }
 
   @Get('country/:country')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async findAllByCountry(
     @Query() query: PaginationArgs,
     @Param('country') country: string,
@@ -63,7 +64,7 @@ export class SeoController {
   }
 
   @Get('get/:id')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async findOne(@Param('id') id: number): Promise<SeoEntity> {
     return await this.seoService.findOne(id);
   }
@@ -77,7 +78,7 @@ export class SeoController {
   }
 
   @Put('update/:id')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async update(
     @Param('id') id: number,
     @CurrentUser() user: UserEntity,
@@ -89,7 +90,7 @@ export class SeoController {
   }
 
   @Put('main/:id')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async Main(
     @Param('id') id: number,
     @CurrentUser() user: UserEntity,
@@ -102,7 +103,7 @@ export class SeoController {
   }
 
   @Delete('delete/:id')
-  @UseGuards(DashboardGuard)
+  @UseGuards(JwtUserGuard, AdminGuard)
   async remove(
     @Param('id') id: number,
     @CurrentUser() user: UserEntity,

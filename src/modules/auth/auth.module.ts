@@ -27,7 +27,7 @@ import { RTJwtStrategy } from './strategies/rt-jwt.strategy';
       useFactory: (configService: ConfigService<ConfigKeyPaths>) => {
         const { jwtSecret, jwtExpire } =
           configService.get<ISecurityConfig>('security');
-
+        console.log(jwtExpire);
         return {
           secret: jwtSecret,
           signOptions: {

@@ -22,14 +22,6 @@ export function setupSwagger(
     .setDescription(`${name} API document`)
     .setVersion('1.0');
 
-  // auth security
-  // documentBuilder.addSecurity(API_SECURITY_AUTH, {
-  //   description: 'Enter the token with ( Bearer token )',
-  //   type: 'http',
-  //   scheme: 'bearer',
-  //   bearerFormat: 'JWT',
-  // });
-
   documentBuilder.addBearerAuth();
 
   const document = SwaggerModule.createDocument(app, documentBuilder.build(), {

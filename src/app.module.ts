@@ -15,7 +15,8 @@ import config from './config';
 import { DatabaseModule } from './shared/database/database.module';
 import { MailerModule } from './shared/mailer/mailer.module';
 import { SeoAnalyticsModule } from './modules/analytics/seo-analytics/seo-analytics.module';
-import { ReplyModule } from './reply/reply.module';
+import { ReplyModule } from './modules/reply/reply.module';
+import { ContactUsModule } from './modules/contact-us/contact-us.module';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { ReplyModule } from './reply/reply.module';
       envFilePath: [
         '.env.development',
         // '.env.production',
-        `.env.${process.env.NODE_ENV}`,
+        // `.env.${process.env.NODE_ENV}`,
         '.env',
       ],
       load: [...Object.values(config)],
@@ -60,6 +61,8 @@ import { ReplyModule } from './reply/reply.module';
     SeoAnalyticsModule,
 
     ReplyModule,
+
+    ContactUsModule,
   ],
   controllers: [],
   providers: [],

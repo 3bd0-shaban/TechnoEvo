@@ -58,4 +58,8 @@ export enum ErrorEnum {
   //BLOG
   SEO_ALREADY_EXIST = '1407: Seo configuration already exist for this country!',
   SEO_NOT_EXIST = '1408: Seo is not exist',
+
+  //BLOG
+  COMMENT_ALREADY_EXIST = '1407: Comment Not Founded',
+  COMMENT_NOT_EXIST = '1408: Comment Already Exists',
 }

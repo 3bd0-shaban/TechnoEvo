@@ -2,7 +2,7 @@ import { Entity, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { CommonEntity } from '~/common/entity/common.entity';
 import { CategoryEntity } from '~/modules/category/entities/category.entity';
 import { CommentEntity } from '~/modules/comment/entities/comment.entity';
-import { ReplyEntity } from '~/reply/entities/reply.entity';
+import { ReplyEntity } from '~/modules/reply/entities/reply.entity';
 
 @Entity({ name: 'blogs' })
 export class BlogEntity extends CommonEntity {

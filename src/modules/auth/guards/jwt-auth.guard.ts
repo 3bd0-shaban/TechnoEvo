@@ -12,7 +12,7 @@ export class JwtUserGuard extends AuthGuard(AuthStrategy.JWT) {
     const request = context.switchToHttp().getRequest();
     return request;
   }
-
+  
   handleRequest(err: any, user: any, info: any, context: ExecutionContext) {
     if (err || !user) {
       throw new UnauthorizedException('Unauthorized: Invalid or expired token');
