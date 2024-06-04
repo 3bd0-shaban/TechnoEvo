@@ -9,5 +9,6 @@ import { BlogModule } from '../blog/blog.module';
   imports: [BlogModule, TypeOrmModule.forFeature([CommentEntity])],
   controllers: [CommentController],
   providers: [CommentService],
+  exports: [CommentService],
 })
 export class CommentModule {}

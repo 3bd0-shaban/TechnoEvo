@@ -44,19 +44,19 @@ export class CategoryService {
    * Get All categorys with pagination
    *
    * @param {PaginationArgs} pagination - pagination inputs
-   * @returns {Promise<{ categorys: CategoryEntity[]; results: number; total: number }>} - Paginated categorys
+   * @returns {Promise<{ categories: CategoryEntity[]; results: number; total: number }>} - Paginated categorys
    * @memberof categoryService
    */
   async findAll(
     pagination: PaginationArgs,
-  ): Promise<{ categorys: CategoryEntity[]; results: number; total: number }> {
+  ): Promise<{ categories: CategoryEntity[]; results: number; total: number }> {
     const { page = 1, limit = 10 } = pagination;
     const skip = (page - 1) * limit;
-    const [categorys, total] = await this.categoryRepository.findAndCount({
+    const [categories, total] = await this.categoryRepository.findAndCount({
       take: limit,
       skip,
     });
-    return { total, results: categorys.length, categorys };
+    return { total, results: categories.length, categories };
   }
 
   /**

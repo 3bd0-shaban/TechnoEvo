@@ -11,13 +11,21 @@ import {
   UploadedFile,
   UseInterceptors,
   BadRequestException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { PaginationArgs } from '~/shared/dto/args/pagination-query.args';
 import { BlogEntity } from './entities/blog.entity';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiTags,
+  ApiResponse,
+  getSchemaPath,
+} from '@nestjs/swagger';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { JwtUserGuard } from '../auth/guards/jwt-auth.guard';
 import { Express } from 'express';
@@ -39,16 +47,37 @@ export class BlogController {
     type: CreateBlogDto,
     required: true,
   })
+  @ApiResponse({
+    status: 201,
+    description: 'The blog has been successfully created.',
+    type: BlogEntity,
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
   async create(
     @Body() inputs: CreateBlogDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(FileUploadPipe) file: Express.Multer.File,
   ): Promise<BlogEntity> {
-    console.log(inputs);
+    if (!file) {
+      throw new BadRequestException('Thumbnail is required');
+    }
     return this.blogService.create(inputs, file.path);
   }
 
   @Get('all-blogs')
-  @UseGuards(JwtUserGuard, AdminGuard)
+  @ApiResponse({
+    status: 200,
+    description: 'List of all blogs',
+    schema: {
+      type: 'object',
+      properties: {
+        blogs: {
+          type: 'array',
+          items: { $ref: getSchemaPath(BlogEntity) },
+        },
+        total: { type: 'number' },
+      },
+    },
+  })
   async findAll(
     @Query() query: PaginationArgs,
   ): Promise<{ blogs: BlogEntity[]; total: number }> {
@@ -57,14 +86,29 @@ export class BlogController {
 
   @Get('get/:id')
   @UseGuards(JwtUserGuard, AdminGuard)
-  findOne(@Param('id') id: number): Promise<BlogEntity> {
-    return this.blogService.findOne(id);
+  @ApiResponse({
+    status: 200,
+    description: 'The blog has been found',
+    type: BlogEntity,
+  })
+  @ApiResponse({ status: 404, description: 'Blog not found' })
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<BlogEntity> {
+    const blog = await this.blogService.findOne(id);
+    if (!blog) {
+      throw new BadRequestException('Blog not found');
+    }
+    return blog;
   }
 
   @Put('update/:id')
   @UseGuards(JwtUserGuard, AdminGuard)
+  @ApiResponse({
+    status: 200,
+    description: 'The blog has been successfully updated.',
+  })
+  @ApiResponse({ status: 404, description: 'Blog not found' })
   async update(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() inputs: UpdateBlogDto,
   ): Promise<string> {
     await this.blogService.update(id, inputs);
@@ -73,7 +117,12 @@ export class BlogController {
 
   @Delete('delete/:id')
   @UseGuards(JwtUserGuard, AdminGuard)
-  remove(@Param('id') id: number): Promise<void> {
-    return this.blogService.removeById(id);
+  @ApiResponse({
+    status: 200,
+    description: 'The blog has been successfully deleted.',
+  })
+  @ApiResponse({ status: 404, description: 'Blog not found' })
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.blogService.removeById(id);
   }
 }

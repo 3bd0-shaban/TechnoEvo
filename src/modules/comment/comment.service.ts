@@ -90,7 +90,15 @@ export class CommentService {
    * @throws {NotFoundException} - If the comment with the provided ID is not found
    */
   async removeById(commentId: number): Promise<void> {
-    const comment = await this.findOne(commentId);
+    const comment = await this.commentRepository.findOne({
+      where: { id: commentId },
+      relations: ['replies'],
+    });
+
+    if (!comment) {
+      throw new NotFoundException(ErrorEnum.COMMENT_NOT_EXIST);
+    }
+
     await this.commentRepository.remove(comment);
   }
 

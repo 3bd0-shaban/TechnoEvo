@@ -34,7 +34,7 @@ export class CategoryController {
   @UseGuards(JwtUserGuard, AdminGuard)
   async findAll(
     @Query() query: PaginationArgs,
-  ): Promise<{ categorys: CategoryEntity[]; total: number }> {
+  ): Promise<{ categories: CategoryEntity[]; total: number }> {
     return await this.categoryService.findAll(query);
   }
 
