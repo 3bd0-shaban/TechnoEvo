@@ -41,31 +41,36 @@ export enum ErrorEnum {
   OSS_EXCEE_MAXIMUM_QUANTITY = '1403: Exceeded the maximum quantity supported',
 
   //CATEGORY
-  CATEGORY_ALREADY_EXIST = '1403: category already exists',
-  CATEGORY_NOT_EXIST = '1404: category is not exist',
+  CATEGORY_ALREADY_EXIST = '1501: Category already exists',
+  CATEGORY_NOT_EXIST = '1502: Category does not exist',
 
   //BLOG
-  BLOG_ALREADY_EXIST = '1405: blog already exists',
-  BLOG_NOT_EXIST = '1406: blog is not exist',
+  BLOG_ALREADY_EXIST = '1601: Blog already exists',
+  BLOG_NOT_EXIST = '1602: Blog does not exist',
 
-  //BLOG
-  SEO_ALREADY_EXIST = '1407: Seo configuration already exist for this country!',
-  SEO_NOT_EXIST = '1408: Seo is not exist',
+  //SEO Country
+  SEO_COUNTRY_ALREADY_EXIST = '1701: SEO Country configuration already exists for this country',
+  SEO_COUNTRY_NOT_EXIST = '1702: SEO Country does not exist',
+  SEO_COUNTRY_NO_MAIN = '1703: Main Country SEO configuration does not exist',
+
+  //SEO Page
+  SEO_PAGE_ALREADY_EXIST = '1711: SEO Page configuration already exists for this country',
+  SEO_PAGE_NOT_EXIST = '1712: SEO Page does not exist',
 
   //Comment
-  COMMENT_ALREADY_EXIST = '1409: Comment Not Founded',
-  COMMENT_NOT_EXIST = '1410: Comment Already Exists',
+  COMMENT_ALREADY_EXIST = '1801: Comment already exists',
+  COMMENT_NOT_EXIST = '1802: Comment does not exist',
 
   //Replay
-  REPLAY_ALREADY_EXIST = '1411: Replay Not Founded',
-  REPLAY_NOT_EXIST = '1412: Replay Already Exists',
+  REPLAY_ALREADY_EXIST = '1901: Replay already exists',
+  REPLAY_NOT_EXIST = '1902: Replay does not exist',
 
   //Contact us
-  CONTACTUS_ALREADY_EXIST = '1413: Contact us message Not Founded',
-  CONTACTUS_NOT_EXIST = '1414: contact us message Already Exists',
+  CONTACTUS_ALREADY_EXIST = '2001: Contact us message already exists',
+  CONTACTUS_NOT_EXIST = '2002: Contact us message does not exist',
 
-  //Contact us
-  BANNER_ALREADY_EXIST = '1415: banner Not Founded',
-  BANNER_NOT_EXIST = '1416: banner Already Exists',
-  MIXIMUM_BANNERS = '1417: Can not have more than 6 banners , please remove one before proceeding',
+  //Banner
+  BANNER_ALREADY_EXIST = '2101: Banner already exists',
+  BANNER_NOT_EXIST = '2102: Banner does not exist',
+  MAXIMUM_BANNERS = '2103: Cannot have more than 6 banners, please remove one before proceeding',
 }

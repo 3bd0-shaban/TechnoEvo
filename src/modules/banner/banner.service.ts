@@ -28,7 +28,7 @@ export class BannerService {
   async create(blog: BlogEntity, user: UserEntity): Promise<BannerEntity> {
     const bannerCount = await this.bannerRepository.count();
     if (bannerCount > 6) {
-      throw new NotAcceptableException(ErrorEnum.MIXIMUM_BANNERS);
+      throw new NotAcceptableException(ErrorEnum.MAXIMUM_BANNERS);
     }
 
     const bannerDoc = this.bannerRepository.create({

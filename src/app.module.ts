@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CategoryModule } from './modules/category/category.module';
 import { LogModule } from './modules/log/log.module';
-import { SeoModule } from './modules/seo/seo.module';
+import { SeoPageModule } from './modules/seo-page/seo-page.module';
 import { BlogModule } from './modules/blog/blog.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
@@ -17,6 +17,7 @@ import { MailerModule } from './shared/mailer/mailer.module';
 import { SeoAnalyticsModule } from './modules/analytics/seo-analytics/seo-analytics.module';
 import { ReplyModule } from './modules/reply/reply.module';
 import { ContactUsModule } from './modules/contact-us/contact-us.module';
+import { SeoCountryModule } from './modules/seo-country/seo-country.module';
 
 @Module({
   imports: [
@@ -51,15 +52,15 @@ import { ContactUsModule } from './modules/contact-us/contact-us.module';
     BlogModule,
     CategoryModule,
     LogModule,
-    SeoModule,
     AuthModule,
     UserModule,
     BannerModule,
     CommentModule,
 
+    SeoPageModule,
+    SeoCountryModule,
     //Analytics
     SeoAnalyticsModule,
-
     ReplyModule,
 
     ContactUsModule,

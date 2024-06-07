@@ -4,15 +4,13 @@ import {
   IsArray,
   ArrayNotEmpty,
   ArrayMinSize,
-  IsBoolean,
-  Matches,
   IsString,
   IsUrl,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { SEO_STATUS_ENUM } from '../seo.constant';
+import { SEO_PAGES_ENUM, SEO_STATUS_ENUM } from '../seo-page.constant';
 
-export class CreateSeoDto {
+export class CreateSeoPageDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -25,15 +23,8 @@ export class CreateSeoDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @Matches(/^[A-Z]{2}$/, {
-    message: 'Invalid country code format. It should be two uppercase letters.',
-  })
-  country: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  page: string;
+  @IsEnum(SEO_PAGES_ENUM)
+  page: SEO_PAGES_ENUM;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -50,12 +41,4 @@ export class CreateSeoDto {
   @IsNotEmpty()
   @IsEnum(SEO_STATUS_ENUM)
   Seo_Status: SEO_STATUS_ENUM;
-
-  @ApiProperty({ default: true })
-  @IsBoolean()
-  is_Active?: boolean;
-
-  @ApiProperty({ default: false })
-  @IsBoolean()
-  is_Main?: boolean;
 }

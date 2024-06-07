@@ -69,7 +69,7 @@ export class BlogService {
     const { page = 1, limit = 10 } = pagination;
     const skip = (page - 1) * limit;
     const [blogs, total] = await this.blogRepository.findAndCount({
-      relations: ['genres'],
+      relations: ['categories'],
       take: limit,
       skip,
     });

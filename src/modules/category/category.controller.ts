@@ -19,19 +19,18 @@ import { AdminGuard } from '../auth/guards/admin.guard';
 import { JwtUserGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Category')
-@ApiBearerAuth()
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post('create-category')
+  @ApiBearerAuth()
   @UseGuards(JwtUserGuard, AdminGuard)
-  create(@Body() inputs: CreateCategoryDto) {
-    return this.categoryService.create(inputs);
+  async create(@Body() inputs: CreateCategoryDto) {
+    await this.categoryService.create(inputs);
   }
 
   @Get('all-categories')
-  @UseGuards(JwtUserGuard, AdminGuard)
   async findAll(
     @Query() query: PaginationArgs,
   ): Promise<{ categories: CategoryEntity[]; total: number }> {
@@ -39,24 +38,21 @@ export class CategoryController {
   }
 
   @Get('get/:id')
-  @UseGuards(JwtUserGuard, AdminGuard)
   findOne(@Param('id') id: number): Promise<CategoryEntity> {
     return this.categoryService.findOne(id);
   }
 
   @Put('update/:id')
+  @ApiBearerAuth()
   @UseGuards(JwtUserGuard, AdminGuard)
-  async update(
-    @Param('id') id: number,
-    @Body() inputs: UpdateCategoryDto,
-  ): Promise<string> {
+  async update(@Param('id') id: number, @Body() inputs: UpdateCategoryDto) {
     await this.categoryService.update(id, inputs);
-    return 'ok';
   }
 
   @Delete('delete/:id')
+  @ApiBearerAuth()
   @UseGuards(JwtUserGuard, AdminGuard)
-  remove(@Param('id') id: number): Promise<void> {
-    return this.categoryService.removeById(id);
+  async remove(@Param('id') id: number) {
+    await this.categoryService.removeById(id);
   }
 }

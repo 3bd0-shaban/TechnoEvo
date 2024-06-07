@@ -1,13 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsInt,
-  Min,
-  Max,
-  IsOptional,
-  IsNotEmpty,
-  Matches,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, Matches, IsString, IsEnum } from 'class-validator';
+import { SEO_PAGES_ENUM } from '../../seo-page.constant';
 
 export class SeoWebsitePages {
   @ApiProperty({
@@ -24,9 +17,9 @@ export class SeoWebsitePages {
   @ApiProperty({
     description: 'website page',
     required: true,
-    default: 'Home',
+    default: SEO_PAGES_ENUM.HOME,
   })
   @IsNotEmpty()
-  @IsString()
-  page: string;
+  @IsEnum(SEO_PAGES_ENUM)
+  page: SEO_PAGES_ENUM;
 }

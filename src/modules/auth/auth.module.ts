@@ -30,7 +30,7 @@ import { RTJwtStrategy } from './strategies/rt-jwt.strategy';
         return {
           secret: jwtSecret,
           signOptions: {
-            expiresIn: `${jwtExpire}s`,
+            expiresIn: isDev ? undefined : `${jwtExpire}s`,
           },
           ignoreExpiration: isDev,
         };

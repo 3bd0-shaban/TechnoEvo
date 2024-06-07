@@ -5,6 +5,7 @@ import {
   IsString,
   MinLength,
   ArrayNotEmpty,
+  IsOptional,
 } from 'class-validator';
 import { CategoryEntity } from '~/modules/category/entities/category.entity';
 
@@ -29,7 +30,7 @@ export class CreateBlogDto {
     format: 'binary',
     description: 'Blog Image',
   })
-  @IsNotEmpty()
+  @IsOptional()
   thumbnail?: any;
 
   @ApiProperty({

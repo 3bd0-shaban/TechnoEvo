@@ -22,18 +22,14 @@ export class CategoryService {
   /**
    * Create New category
    *
-   * @param {CreatecategoryDTO} createcategoryDto - enterted inputs
+   * @param {CreatecategoryDTO} inputs - enterted inputs
    * @returns {Promise<CategoryEntity>} - Password match result
    * @memberof categoryService
    */
   async create(inputs: CreateCategoryDto): Promise<CategoryEntity> {
     const { category } = inputs;
-    const exists = await this.categoryRepository.findOneBy({
-      category,
-    });
-    if (!isEmpty(exists)) {
-      throw new ConflictException(ErrorEnum.CATEGORY_ALREADY_EXIST);
-    }
+
+    await this.validateIfCategoryExist(category);
     const categoryDoc = this.categoryRepository.create({
       ...inputs,
     });
@@ -75,6 +71,21 @@ export class CategoryService {
   }
 
   /**
+   * Update category
+   *
+   * @param {number} categoryID - category ID
+   * @param {UpdatecategoryDTO} inputs - Updated category params
+   * @returns {Promise<UpdateResult>} - The updated category
+   */
+  async update(
+    categoryID: number,
+    inputs: UpdateCategoryDto,
+  ): Promise<UpdateResult> {
+    await this.validateIfCategoryExist(inputs.category, categoryID);
+    return await this.categoryRepository.update(categoryID, inputs);
+  }
+
+  /**
    * Remove a category by ID
    *
    * @param {number} categoryID - category ID
@@ -86,16 +97,21 @@ export class CategoryService {
   }
 
   /**
-   * Update the currently authenticated category
+   * check if the category is existing
    *
-   * @param {number} categoryId - category ID
-   * @param {UpdatecategoryDTO} inputs - Updated category params
+   * @param {steing} category - category Name
+   * @param {steing} categoryId  - category ID required in case of updating category
    * @returns {Promise<UpdateResult>} - The updated category
    */
-  async update(
-    categoryID: number,
-    inputs: UpdateCategoryDto,
-  ): Promise<UpdateResult> {
-    return await this.categoryRepository.update(categoryID, inputs);
+  private async validateIfCategoryExist(
+    category: string,
+    categoryId?: number,
+  ): Promise<void> {
+    const categoryExist = await this.categoryRepository.findOneBy({
+      category,
+    });
+    if (!isEmpty(categoryExist) && categoryId !== categoryExist.id) {
+      throw new ConflictException(ErrorEnum.CATEGORY_ALREADY_EXIST);
+    }
   }
 }
