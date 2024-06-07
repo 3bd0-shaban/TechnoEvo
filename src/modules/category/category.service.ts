@@ -80,9 +80,13 @@ export class CategoryService {
   async update(
     categoryID: number,
     inputs: UpdateCategoryDto,
-  ): Promise<UpdateResult> {
-    await this.validateIfCategoryExist(inputs.category, categoryID);
-    return await this.categoryRepository.update(categoryID, inputs);
+  ): Promise<CategoryEntity> {
+    const category = await this.validateIfCategoryExist(
+      inputs.category,
+      categoryID,
+    );
+    await this.categoryRepository.update(categoryID, inputs);
+    return category;
   }
 
   /**
@@ -91,9 +95,10 @@ export class CategoryService {
    * @param {number} categoryID - category ID
    * @throws {NotFoundException} - If the category with the provided ID is not found
    */
-  async removeById(categoryID: number): Promise<void> {
+  async removeById(categoryID: number): Promise<CategoryEntity> {
     const category = await this.findOne(categoryID);
     await this.categoryRepository.remove(category);
+    return category;
   }
 
   /**
@@ -106,12 +111,13 @@ export class CategoryService {
   private async validateIfCategoryExist(
     category: string,
     categoryId?: number,
-  ): Promise<void> {
+  ): Promise<CategoryEntity> {
     const categoryExist = await this.categoryRepository.findOneBy({
       category,
     });
     if (!isEmpty(categoryExist) && categoryId !== categoryExist.id) {
       throw new ConflictException(ErrorEnum.CATEGORY_ALREADY_EXIST);
     }
+    return categoryExist;
   }
 }
