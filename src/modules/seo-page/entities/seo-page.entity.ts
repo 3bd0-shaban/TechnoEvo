@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { CommonEntity } from '~/common/entity/common.entity';
 import { SeoCountryEntity } from '~/modules/seo-country/entities/seo-country.entity';
 import { UserEntity } from '~/modules/user/entities/user.entity';
@@ -13,6 +13,7 @@ export class SeoPageEntity extends CommonEntity {
   tag_Description: string;
 
   @ManyToOne((type) => SeoCountryEntity, (country) => country.page)
+  @JoinColumn({ name: 'countryCountry' }) // Adjust the name if needed
   country: SeoCountryEntity;
 
   @Column({ enum: SEO_PAGES_ENUM })

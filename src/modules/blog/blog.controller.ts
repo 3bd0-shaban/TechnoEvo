@@ -104,6 +104,9 @@ export class BlogController {
   @UseGuards(JwtUserGuard, AdminGuard)
   @ApiResponse({
     status: 200,
+    schema: {
+      type: 'object',
+    },
     description: 'The blog has been successfully updated.',
   })
   @ApiResponse({ status: 404, description: 'Blog not found' })

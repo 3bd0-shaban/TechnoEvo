@@ -19,7 +19,7 @@ import { SEO_PAGES_ENUM } from './seo-page.constant';
 export class SeoPageService {
   constructor(
     @InjectRepository(SeoPageEntity)
-    private readonly seoRepository: Repository<SeoPageEntity>,
+    private readonly seoPageRepository: Repository<SeoPageEntity>,
     private readonly seoCountryService: SeoCountryService,
   ) {}
 
@@ -40,12 +40,12 @@ export class SeoPageService {
     await this.validateSeoExistsByPage(page);
     await this.seoCountryService.validateSeoCountryExists(page);
 
-    const seo = this.seoRepository.create({
+    const seo = this.seoPageRepository.create({
       country,
       ...inputs,
     });
 
-    return this.seoRepository.save(seo);
+    return this.seoPageRepository.save(seo);
   }
 
   /**
@@ -60,7 +60,7 @@ export class SeoPageService {
   ): Promise<{ seos: SeoPageEntity[]; results: number; total: number }> {
     const { page = 1, limit = 10 } = pagination;
     const skip = (page - 1) * limit;
-    const [seos, total] = await this.seoRepository.findAndCount({
+    const [seos, total] = await this.seoPageRepository.findAndCount({
       take: limit,
       skip,
     });
@@ -82,7 +82,7 @@ export class SeoPageService {
     const { page = 1, limit = 10 } = pagination;
     const skip = (page - 1) * limit;
 
-    const queryBuilder = this.seoRepository
+    const queryBuilder = this.seoPageRepository
       .createQueryBuilder('seo')
       .leftJoinAndSelect('seo.country', 'country')
       .where('country.country = :country', { country: country })
@@ -102,7 +102,7 @@ export class SeoPageService {
    * @throws {NotFoundException} - If the seo with the provided ID is not found
    */
   async findOneByID(id: number): Promise<SeoPageEntity> {
-    const seo = await this.seoRepository.findOneBy({ id });
+    const seo = await this.seoPageRepository.findOneBy({ id });
     if (!seo) {
       throw new NotFoundException(ErrorEnum.SEO_PAGE_NOT_EXIST);
     }
@@ -121,7 +121,7 @@ export class SeoPageService {
     country: string,
   ): Promise<SeoPageEntity> {
     // Attempt to find the SEO page by country and page
-    let seo = await this.seoRepository
+    let seo = await this.seoPageRepository
       .createQueryBuilder('seo')
       .leftJoinAndSelect('seo.country', 'country')
       .where('seo.page = :page', { page })
@@ -163,7 +163,7 @@ export class SeoPageService {
     page: SEO_PAGES_ENUM,
     mainCountry: string,
   ): Promise<SeoPageEntity> {
-    return this.seoRepository
+    return this.seoPageRepository
       .createQueryBuilder('seo')
       .leftJoinAndSelect('seo.country', 'country')
       .where('seo.page = :page', { page })
@@ -179,7 +179,7 @@ export class SeoPageService {
    * @returns {Promise<UpdateResult>} - The updated seo
    */
   async update(seoId: number, inputs: UpdateSeoPageDto): Promise<UpdateResult> {
-    return await this.seoRepository.update(seoId, inputs);
+    return await this.seoPageRepository.update(seoId, inputs);
   }
 
   /**
@@ -190,21 +190,25 @@ export class SeoPageService {
    */
   async removeById(seoID: number): Promise<void> {
     const seo = await this.findOneByID(seoID);
-    await this.seoRepository.remove(seo);
+    await this.seoPageRepository.remove(seo);
   }
 
   /**
-   * Remove a seo by ID
+   * Remove all SEO pages by country
    *
-   * @param {number} seoID - seo ID
-   * @throws {NotFoundException} - If the seo with the provided ID is not found
+   * @param {SeoCountryEntity} country - The country entity
    */
-  async removeAllPagesByCountry(country: SeoCountryEntity): Promise<void> {
-    // await this.seoRepository.remove({ country });
+  async removeAllByCountry(country: SeoCountryEntity): Promise<void> {
+    const seoPages = await this.seoPageRepository
+      .createQueryBuilder('seoPage')
+      .where('seoPage.countryCountry = :country', { country: country.country })
+      .getMany();
+
+    await this.seoPageRepository.remove(seoPages);
   }
 
   private async validateSeoExistsByPage(page: SEO_PAGES_ENUM): Promise<void> {
-    const exists = await this.seoRepository.findOneBy({
+    const exists = await this.seoPageRepository.findOneBy({
       page,
     });
     if (!isEmpty(exists)) {

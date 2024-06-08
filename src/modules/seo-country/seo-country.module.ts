@@ -9,9 +9,9 @@ import { SeoAnalyticsModule } from '../analytics/seo-analytics/seo-analytics.mod
 
 @Module({
   imports: [
-    forwardRef(() => SeoPageModule),
     LogModule,
     SeoAnalyticsModule,
+    forwardRef(() => SeoPageModule),
     TypeOrmModule.forFeature([SeoCountryEntity]),
   ],
   controllers: [SeoCountryController],

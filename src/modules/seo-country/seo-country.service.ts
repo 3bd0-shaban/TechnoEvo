@@ -10,14 +10,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SeoCountryEntity } from './entities/seo-country.entity';
 import { PaginationArgs } from '~/shared/dto/args/pagination-query.args';
-import { SeoPageService } from '../seo-page/seo-page.service';
 
 @Injectable()
 export class SeoCountryService {
   constructor(
     @InjectRepository(SeoCountryEntity)
-    private readonly seoRepository: Repository<SeoCountryEntity>,
-    // private readonly seoPages: SeoPageService,
+    private readonly seoCountryRepository: Repository<SeoCountryEntity>,
   ) {}
 
   /**
@@ -31,11 +29,11 @@ export class SeoCountryService {
     const { country } = inputs;
     await this.validateSeoCountryExists(country);
 
-    const seo = this.seoRepository.create({
+    const seo = this.seoCountryRepository.create({
       ...inputs,
     });
 
-    return this.seoRepository.save(seo);
+    return this.seoCountryRepository.save(seo);
   }
 
   /**
@@ -50,7 +48,7 @@ export class SeoCountryService {
   ): Promise<{ seos: SeoCountryEntity[]; results: number; total: number }> {
     const { page = 1, limit = 10 } = pagination;
     const skip = (page - 1) * limit;
-    const [seos, total] = await this.seoRepository.findAndCount({
+    const [seos, total] = await this.seoCountryRepository.findAndCount({
       take: limit,
       skip,
     });
@@ -65,7 +63,7 @@ export class SeoCountryService {
    * @throws {NotFoundException} - If the seo with the provided country code is not found
    */
   async findOneByCountry(country: string): Promise<SeoCountryEntity> {
-    const seo = await this.seoRepository.findOneBy({ country });
+    const seo = await this.seoCountryRepository.findOneBy({ country });
     if (!seo) {
       throw new NotFoundException(ErrorEnum.SEO_COUNTRY_NOT_EXIST);
     }
@@ -79,7 +77,7 @@ export class SeoCountryService {
    * @throws {NotFoundException} - If the seo with the provided country code is not found
    */
   async findMainSeo(): Promise<SeoCountryEntity> {
-    const seo = await this.seoRepository.findOneBy({ is_Main: true });
+    const seo = await this.seoCountryRepository.findOneBy({ is_Main: true });
     if (!seo) {
       throw new NotFoundException(ErrorEnum.SEO_COUNTRY_NO_MAIN);
     }
@@ -93,10 +91,10 @@ export class SeoCountryService {
    * @returns {Promise<UpdateResult>} - The updated seo
    */
   async MarkMain(country: string): Promise<SeoCountryEntity> {
-    await this.seoRepository.query('BEGIN');
+    await this.seoCountryRepository.query('BEGIN');
 
     // Update all SEO entries with is_Main true to false
-    await this.seoRepository
+    await this.seoCountryRepository
       .createQueryBuilder()
       .update(SeoCountryEntity)
       .set({ is_Main: false })
@@ -104,16 +102,16 @@ export class SeoCountryService {
       .execute();
 
     // Find the SEO entry country code
-    const seo = await this.seoRepository.findOneBy({ country });
+    const seo = await this.seoCountryRepository.findOneBy({ country });
 
     if (!seo) {
       // Rollback the transaction if SEO with the specified country code is not found
-      await this.seoRepository.query('ROLLBACK');
+      await this.seoCountryRepository.query('ROLLBACK');
       throw new NotFoundException(ErrorEnum.SEO_COUNTRY_NOT_EXIST);
     }
 
     // Update all SEO entries with the same country as the found SEO to is_Main true
-    await this.seoRepository
+    await this.seoCountryRepository
       .createQueryBuilder()
       .update(SeoCountryEntity)
       .set({ is_Main: true })
@@ -121,20 +119,17 @@ export class SeoCountryService {
       .execute();
 
     // Commit the transaction
-    await this.seoRepository.query('COMMIT');
+    await this.seoCountryRepository.query('COMMIT');
     return seo;
   }
 
   /**
-   * Remove a seo by country code
+   * Remove a country and all its SEO pages by country code
    *
-   * @param {string} country - country code
-   * @throws {NotFoundException} - If the seo with the provided country code is not found
+   * @param {string} country - The country code
    */
-  async removeByCountry(country: string): Promise<void> {
-    const seo = await this.findOneByCountry(country);
-    // await this.seoPages.removeAllPagesByCountry(country);
-    await this.seoRepository.remove(seo);
+  async removeByCountry(seoCountry: SeoCountryEntity): Promise<void> {
+    await this.seoCountryRepository.remove(seoCountry);
   }
 
   /**
@@ -144,7 +139,7 @@ export class SeoCountryService {
    * @throws {NotFoundException} - If the seo with the provided country code is not found
    */
   async validateSeoCountryExists(country: string): Promise<void> {
-    const exists = await this.seoRepository.findOneBy({
+    const exists = await this.seoCountryRepository.findOneBy({
       country,
     });
     if (!isEmpty(exists)) {
