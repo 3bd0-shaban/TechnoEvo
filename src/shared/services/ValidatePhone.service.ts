@@ -13,9 +13,16 @@ export class PhoneValidationService {
     this.phoneNumberUtil = PhoneNumberUtil.getInstance();
   }
 
-  validatePhoneNumber(value: { number: string; code: string }): string {
+  /**
+   * validate phone number by libphone liberery from google
+   *
+   * @param {{number: string;code: string}} phone -phone number ( code , number )
+   * @returns {Promise<string>} - formatted phone number
+   * @memberof AuthService
+   */
+  validatePhoneNumber(phone: { number: string; code: string }): string {
     try {
-      const { number, code } = value;
+      const { number, code } = phone;
       const parsedNumber = this.phoneNumberUtil.parseAndKeepRawInput(
         number,
         code,

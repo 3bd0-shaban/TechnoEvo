@@ -28,6 +28,11 @@ export class CreateContactUsDto {
   @IsString()
   phone: string;
 
+  @ApiProperty({ description: 'country code' })
+  @IsNotEmpty()
+  @IsString()
+  code: string;
+
   @ApiProperty({ description: 'The actual message content' })
   @IsNotEmpty()
   @IsString()

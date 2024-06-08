@@ -2,9 +2,9 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { CommonEntity } from '~/common/entity/common.entity';
 import { SeoCountryEntity } from '~/modules/seo-country/entities/seo-country.entity';
 import { UserEntity } from '~/modules/user/entities/user.entity';
-import { SEO_PAGES_ENUM } from '../seo-page.constant';
+import { SEO_PAGES_ENUM, SEO_STATUS_ENUM } from '../seo-page.constant';
 
-@Entity({ name: 'seo-pages' })
+@Entity({ name: 'seo_pages' })
 export class SeoPageEntity extends CommonEntity {
   @Column()
   tag_Title: string;
@@ -13,10 +13,9 @@ export class SeoPageEntity extends CommonEntity {
   tag_Description: string;
 
   @ManyToOne((type) => SeoCountryEntity, (country) => country.page)
-  @JoinColumn({ name: 'countryCountry' }) // Adjust the name if needed
   country: SeoCountryEntity;
 
-  @Column({ enum: SEO_PAGES_ENUM })
+  @Column({ type: 'enum', enum: SEO_PAGES_ENUM })
   page: SEO_PAGES_ENUM;
 
   @OneToOne((type) => UserEntity, (admin) => admin.id)
@@ -30,7 +29,7 @@ export class SeoPageEntity extends CommonEntity {
 
   @Column({
     type: 'enum',
-    enum: ['Optimized', 'Not Optimized'],
+    enum: SEO_STATUS_ENUM,
   })
-  Seo_Status: string;
+  Seo_Status: SEO_STATUS_ENUM;
 }

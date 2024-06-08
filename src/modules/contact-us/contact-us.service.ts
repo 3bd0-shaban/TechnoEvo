@@ -17,12 +17,17 @@ export class ContactUsService {
    * Create New contactUs
    *
    * @param {CreatecontactUsDTO} inputs - enterted inputs
+   * @param {string} phone - formatted phone number
    * @returns {Promise<ContactUsEntity>} - Password match result
    * @memberof contactUsService
    */
-  async create(inputs: CreateContactUsDto): Promise<ContactUsEntity> {
+  async create(
+    inputs: CreateContactUsDto,
+    phone: string,
+  ): Promise<ContactUsEntity> {
     const contactUsDoc = this.contactUsRepository.create({
       ...inputs,
+      phone,
     });
     return await contactUsDoc.save();
   }
@@ -58,7 +63,7 @@ export class ContactUsService {
   async findOne(id: number): Promise<ContactUsEntity> {
     const contactUs = await this.contactUsRepository.findOneBy({ id });
     if (!contactUs) {
-      throw new NotFoundException(ErrorEnum.COMMENT_NOT_EXIST);
+      throw new NotFoundException(ErrorEnum.CONTACTUS_NOT_EXIST);
     }
     return contactUs;
   }

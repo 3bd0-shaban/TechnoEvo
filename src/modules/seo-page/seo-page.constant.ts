@@ -6,9 +6,9 @@ export enum SEO_STATUS_ENUM {
 export enum SEO_PAGES_ENUM {
   HOME = 'Home',
   BLOG = 'Blog',
-  CATEGORY_REVIEWS = 'Category_Reviews',
-  CATEGORY_TUTORIALS = 'Category_Tutorials',
-  CATEGORY_NEWS = 'Category_News',
+  CATEGORY_REVIEWS = 'Category Reviews',
+  CATEGORY_TUTORIALS = 'Category Tutorials',
+  CATEGORY_NEWS = 'Category News',
   POST = 'Post',
   ABOUT = 'About',
   CONTACT = 'Contact',

@@ -9,7 +9,7 @@ import {
 import { SeoPageEntity } from '~/modules/seo-page/entities/seo-page.entity';
 import { UserEntity } from '~/modules/user/entities/user.entity';
 
-@Entity({ name: 'seo-countries' })
+@Entity({ name: 'seo_countries' })
 export class SeoCountryEntity {
   @PrimaryColumn({ unique: true, length: 2 })
   country: string;

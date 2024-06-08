@@ -31,10 +31,10 @@ export class CreateUserDTO {
   @IsString()
   phone: string;
 
-  @ApiProperty({ description: 'phone number' })
+  @ApiProperty({ description: 'country code' })
   @IsNotEmpty()
   @IsString()
-  code?: string;
+  code: string;
 
   @ApiProperty()
   @IsNotEmpty()

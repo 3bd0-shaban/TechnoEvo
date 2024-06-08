@@ -15,16 +15,25 @@ import { JwtUserGuard } from '../auth/guards/jwt-auth.guard';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { ContactUsEntity } from './entities/contact-us.entity';
 import { PaginationArgs } from '~/shared/dto/args/pagination-query.args';
+import { PhoneValidationService } from '~/shared/services/ValidatePhone.service';
 
 @ApiTags('Contact Us')
 @ApiBearerAuth()
 @Controller('contact-us')
 export class ContactUsController {
-  constructor(private readonly contactUsService: ContactUsService) {}
+  constructor(
+    private readonly contactUsService: ContactUsService,
+    private formatter: PhoneValidationService,
+  ) {}
 
   @Post('create-message')
   create(@Body() inputs: CreateContactUsDto) {
-    return this.contactUsService.create(inputs);
+    const { phone, code } = inputs;
+    const formattedPhoneNumber = this.formatter.validatePhoneNumber({
+      code,
+      number: phone,
+    });
+    return this.contactUsService.create(inputs, formattedPhoneNumber);
   }
 
   @Get('all-contact-us')
