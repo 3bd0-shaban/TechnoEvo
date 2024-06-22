@@ -26,6 +26,7 @@ import {
   ApiTags,
   ApiResponse,
   getSchemaPath,
+  ApiOperation,
 } from '@nestjs/swagger';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { JwtUserGuard } from '../auth/guards/jwt-auth.guard';
@@ -33,6 +34,8 @@ import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterImageOptions } from '~/shared/multer/services/multer-options.service';
 import { FileDeleteService } from '~/shared/multer/services/file-delete.service';
+import { ApiResult } from '~/common/decorators/api-result.decorator';
+import axios from 'axios';
 
 @ApiTags('Blogs')
 @ApiBearerAuth()
@@ -67,20 +70,8 @@ export class BlogController {
   }
 
   @Get('all-blogs')
-  @ApiResponse({
-    status: 200,
-    description: 'List of all blogs',
-    schema: {
-      type: 'object',
-      properties: {
-        blogs: {
-          type: 'array',
-          items: { $ref: getSchemaPath(BlogEntity) },
-        },
-        total: { type: 'number' },
-      },
-    },
-  })
+  @ApiOperation({ summary: 'Retrive all blogs' })
+  @ApiResult({ type: [BlogEntity], isPage: true })
   async findAll(
     @Query() query: PaginationArgs,
   ): Promise<{ blogs: BlogEntity[]; total: number }> {
@@ -88,6 +79,8 @@ export class BlogController {
   }
 
   @Get('get/:id')
+  @ApiOperation({ summary: "Retrive blog by it's ID" })
+  @ApiResult({ type: BlogEntity })
   @UseGuards(JwtUserGuard, AdminGuard)
   @ApiResponse({
     status: 200,

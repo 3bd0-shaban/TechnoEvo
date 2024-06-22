@@ -22,16 +22,15 @@ export async function getDataById(modifiedTitle: string) {
 
   return res.json();
 }
-export async function getAllBlogs(): Promise<iBlogResponse> {
-  const currentPage = 1;
-  const limit = 4;
+
+export async function getAllBlogs(currentPage: number): Promise<iBlogResponse> {
+  const limit = 24;
   const res = await fetch(
-    `${url}/api/blog?page=${currentPage}&limit=${limit}`,
+    `${url}/api/blog/all-blogs?page=${currentPage || 1}&limit=${limit}`,
     { next: { revalidate: 100 } },
   );
 
   if (!res.ok) {
   }
-
   return res.json();
 }

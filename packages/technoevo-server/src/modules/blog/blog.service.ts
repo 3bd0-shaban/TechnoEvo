@@ -53,6 +53,7 @@ export class BlogService {
       ...inputs,
       categories: genres,
       thumbnail_Url,
+      url: inputs.blog_Title.replace(/ /g, '_'),
     });
 
     return this.blogRepository.save(blog);

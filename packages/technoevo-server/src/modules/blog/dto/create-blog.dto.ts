@@ -6,6 +6,7 @@ import {
   MinLength,
   ArrayNotEmpty,
   IsOptional,
+  MaxLength,
 } from 'class-validator';
 import { CategoryEntity } from '~/modules/category/entities/category.entity';
 
@@ -16,6 +17,7 @@ export class CreateBlogDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
+  @MaxLength(70)
   blog_Title?: string;
 
   @ApiProperty({

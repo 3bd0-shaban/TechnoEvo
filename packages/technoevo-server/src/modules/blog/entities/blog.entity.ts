@@ -17,8 +17,11 @@ export class BlogEntity extends CommonEntity {
   @Column()
   blog_Title: string;
 
-  @Column()
+  @Column({ type: 'text' })
   blog_des: string;
+
+  @Column()
+  url: string;
 
   @Column('int', { default: 0 })
   likes?: string;
