@@ -1,7 +1,11 @@
+version: '3'
 services:
-  mysql:
-    image: mysql
-    env_file:
-      - .env
+  ftlerates:
+    build: .
     ports:
-      - '3306:3306'
+      - '5000:5000'
+    volumes:
+      - './:/app'
+      - '/app/node_modules'
+    env_file:
+      - ./.env
