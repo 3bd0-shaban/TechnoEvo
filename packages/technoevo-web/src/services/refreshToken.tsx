@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-const url = process.env.NEXT_PUBLIC_API_KEY;
+const url = process.env.NEXT_PUBLIC_Server_APi;
 export async function refreshToken() {
   try {
     const headers: AxiosRequestConfig = {

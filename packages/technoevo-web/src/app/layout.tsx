@@ -62,7 +62,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const allBlogs: iBlogResponse = await getAllBlogs();
 
   return (
     <html lang="en">
@@ -92,7 +91,7 @@ export default async function RootLayout({
             <Toast />
             <Header />
             {children}
-            <Footer allBlogs={allBlogs.blogs as iBlog[]} />
+            <Footer />
           </Providers>
         </div>
       </body>

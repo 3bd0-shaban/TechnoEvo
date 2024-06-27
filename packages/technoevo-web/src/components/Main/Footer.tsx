@@ -1,7 +1,5 @@
 import { iBlog } from '@/types/iBlog';
-import Image from 'next/image';
 import Link from 'next/link';
-import moment from 'moment';
 
 const categories = [
   { _id: 'dkc', categoryName: 'Gadget' },
@@ -18,7 +16,7 @@ const links = [
   { _id: 'djkjh', link: '/about', title: 'About Us' },
   { _id: 'ff', link: '/contact', title: 'Contact us' },
 ];
-const Footer = ({ allBlogs }: { allBlogs: iBlog[] }) => {
+const Footer = () => {
   const Blogs = ({ title }: { title: string }) => {
     return (
       <div className="flex flex-col gap-y-3">

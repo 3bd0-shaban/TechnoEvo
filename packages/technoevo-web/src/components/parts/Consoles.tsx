@@ -4,31 +4,31 @@ import moment from 'moment';
 import Link from 'next/link';
 const Consoles = ({ allBlogs }: { allBlogs: iBlog[] }) => {
   return (
-    <div className="bg-white rounded-lg p-5">
+    <div className="rounded-lg bg-white p-5">
       <div className="flex justify-between py-3">
         <p className="text-lg font-bold">Reviews</p>
         <Link href={`/category/`} className="text-gray-500">
           View all
         </Link>
       </div>
-      <hr className="mb-4 bg-gray-300 h-0.5" />
+      <hr className="mb-4 h-0.5 bg-gray-300" />
       <div className="grid grid-cols-2 gap-5">
         {allBlogs?.map((item) => (
-          <div key={item._id} className="flex flex-col gap-2">
+          <div key={item.id} className="flex flex-col gap-2">
             <Image
               height={300}
               width={300}
               draggable={false}
               className="h-[15rem] w-full object-cover"
-              src={item.image.url}
-              alt={item.title}
+              src={item.thumbnail_Url as string}
+              alt={item.blog_Title as string}
             />
             <Link
               href={`/blog/${item.url}`}
-              className="flex flex-col justify-start items-start"
+              className="flex flex-col items-start justify-start"
             >
-              <p className="font-extrabold mb-2 text-sm">
-                {allBlogs[0]?.title}
+              <p className="mb-2 text-sm font-extrabold">
+                {allBlogs[0]?.blog_Title}
               </p>
             </Link>
             <p className="text-xs text-gray-500">

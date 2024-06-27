@@ -175,3 +175,9 @@
 .swiper-pagination .swiper-pagination-bullet-active {
   background: var(--primary);
 }
+
+
+.form-Input {
+  @apply 
+  outline-none border rounded-md w-full h-10 px-4 focus:ring focus:ring-red-200 hover:border-red-500 duration-200 focus:border-red-500 placeholder:text-sm placeholder:text-gray-300
+}
