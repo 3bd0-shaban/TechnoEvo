@@ -27,9 +27,15 @@ const SigninForm: FC<SigninFormProps> = ({}) => {
   const { mutateAsync } = useSignInMutation();
 
   const onSubmit = async (data: SignInData) => {
+    const { email, password } = data;
     await mutateAsync(data)
       .then(async () => {
-        await signIn('credentials', { data, redirect: true, callbackUrl: '/' });
+        await signIn('credentials', {
+          email,
+          password,
+          redirect: true,
+          callbackUrl: '/',
+        });
         reset();
       })
       .catch((error) => {

@@ -37,20 +37,10 @@ export const authOptions: AuthOptions = {
           body: JSON.stringify({ email, password }),
         });
         const result = await res.json();
-        // if (typeof window === 'undefined') {
-        //     return false;
-        // }
-        // localStorage.setItem("refreshToken", result.refreshToken as string);
-
-        // if (!res.ok) {
-        //   throw new Error(result.message);
-        // }
-        // If no error and we have user data, return it
         if (res.ok && result) {
           return result;
         }
 
-        // Return null if user data could not be retrieved
         return null;
       },
     }),
@@ -90,24 +80,20 @@ export const authOptions: AuthOptions = {
     },
     async jwt({ token, user, account, trigger, session }) {
       if (user) {
-        token.accessToken = user.accessToken;
+        token.access_token = user.access_token;
+        token.role = user.role;
       }
-      if (
-        trigger === 'update' &&
-        session?.accessToken &&
-        session.user &&
-        session.user.role
-      ) {
+      if (trigger === 'update' && session?.access_token && session.role) {
         // Note, that `session` can be any arbitrary object, remember to validate it!
-        token.accessToken = session.accessToken;
-        token.user = session.user;
+        token.access_token = session.access_token;
+        token.role = session.role;
       }
       return token;
     },
 
     async session({ session, token }) {
-      session.accessToken = token.accessToken;
-      session.user = token.user;
+      session.access_token = token.access_token;
+      session.role = token.role;
       return session;
     },
     async redirect({ url, baseUrl }) {

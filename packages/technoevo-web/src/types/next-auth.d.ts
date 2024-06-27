@@ -1,11 +1,9 @@
 import type { Session } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
-import { iClient } from './Titra/iClient';
 
 declare module 'next-auth/jwt' {
   interface JWT {
-    user: iClient;
-    accessToken: string;
+    access_token: string;
     role: string;
     department: string;
   }
@@ -13,11 +11,11 @@ declare module 'next-auth/jwt' {
 
 declare module 'next-auth' {
   interface Session {
-    accessToken: string;
+    access_token: string;
     role: string;
   }
   interface User {
-    accessToken: string;
+    access_token: string;
     role: string;
   }
 }

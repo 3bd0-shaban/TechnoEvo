@@ -38,12 +38,12 @@ export class AuthService {
    */
   async ValidateUser(
     inputs: SignInDto,
-  ): Promise<{ id: number; email: string }> {
+  ): Promise<{ id: number; email: string; role: string }> {
     const { email, password } = inputs;
 
     const user = await this.userRepository
       .createQueryBuilder('user')
-      .select(['user.id', 'user.email', 'user.password'])
+      .select(['user.id', 'user.email', 'user.password', 'user.role'])
       .where('user.email = :email', { email })
       .getOne();
 
@@ -57,7 +57,7 @@ export class AuthService {
       throw new UnauthorizedException(ErrorEnum.INVALID_EMAIL_PASSWORD);
     }
 
-    return { id: user.id, email: user.email };
+    return { id: user.id, email: user.email, role: user.role };
   }
 
   /**

@@ -1,17 +1,17 @@
 'use client';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import logo from '../../../public/Images/icon.png';
 import NavList from '../parts/NavList';
 import { BsMoon, BsSearch } from 'react-icons/bs';
-const Header: React.FC = () => {
-  const [open, setOpen] = useState<Boolean>(false);
-
+import { Session } from 'next-auth';
+import Link from 'next/link';
+const Header: React.FC<{ sesssion: Session | null }> = ({ sesssion }) => {
   return (
     <div className="py-20">
-      <div className="h-20 container max-w-[105rem] absolute inset-x-0 top-20 rounded-xl px-5 shadow shadow-slate-200 bg-white">
-        <div className="flex justify-between items-center  h-full">
-          <div className="flex gap-1 items-center">
+      <div className="container absolute inset-x-0 top-20 h-20 max-w-[105rem] rounded-xl bg-white px-5 shadow shadow-slate-200">
+        <div className="flex h-full items-center justify-between">
+          <div className="flex items-center gap-1">
             <Image
               height={100}
               width={200}
@@ -19,18 +19,26 @@ const Header: React.FC = () => {
               src={logo}
               alt="technoEvo"
             />
-            <div className="px-5 flex items-center gap-3">
+            <div className="flex items-center gap-3 px-5">
               <NavList />
             </div>
           </div>
-          <div className="flex justify-between items-center max-w-[50%] gap-5 divide-x-[1px] divide-gray-300">
-            <p className="text-gray-400 text-sm">
-              Wel{`come to Tomorrow's Tech Wonders!`}
+          <div className="flex max-w-[50%] items-center justify-between gap-5 divide-x-[1px] divide-gray-300">
+            <p className="text-sm text-gray-400">
+              {sesssion?.role && <Link href="/admin/">Dashboard</Link>}
+              {!sesssion && (
+                <Link
+                  href="/auth/signin"
+                  className="font-medium text-red-500 underline"
+                >
+                  Login
+                </Link>
+              )}
             </p>
-            <div className="flex items-center pl-5 gap-5">
+            <div className="flex items-center gap-5 pl-5">
               <p>Featutres</p>
               <BsMoon />
-              <span className="h-10 w-10 rounded-lg bg-gray-100 items-center justify-center flex ">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100">
                 <BsSearch />
               </span>
             </div>

@@ -35,7 +35,7 @@ export default function HomeBlogs({
 
   return (
     <>
-      <div className="grid grid-cols-4 gap-8 ">
+      <div className="grid grid-cols-4 gap-8">
         {columns.map((columnBlogs, index) => (
           <ColumnBlogs key={index} blogs={columnBlogs} />
         ))}
@@ -47,9 +47,9 @@ export default function HomeBlogs({
             disabled={isFetching}
             className="my-5 hover:text-blue-500 group-hover:bg-blue-500 group-hover:text-white"
           >
-            <div className="flex gap-2 items-center font-medium text-sm">
+            <div className="flex items-center gap-2 text-sm font-medium">
               <p>Load More.</p>
-              <span className="group flex items-center w-8 h-8 bg-white shadow justify-center rounded-full">
+              <span className="group flex h-8 w-8 items-center justify-center rounded-full bg-white shadow">
                 <BiChevronDown />
               </span>
             </div>

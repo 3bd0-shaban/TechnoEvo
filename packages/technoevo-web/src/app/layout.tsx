@@ -10,6 +10,8 @@ import Script from 'next/script';
 import { siteConfig } from '@/config/site';
 import { getAllBlogs } from '@/services/blogApi';
 import { iBlog, iBlogResponse } from '@/types/iBlog';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/lib/auth';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
@@ -62,9 +64,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
+  const session = await getServerSession(authOptions);
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <Script
           id="Absence-banner"
@@ -77,9 +79,12 @@ export default async function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className={`bg-[#F5F6F7] ${inter.className}`}>
+      <body
+        className={`bg-[#F5F6F7] ${inter.className}`}
+        suppressHydrationWarning
+      >
         <div
-          className="bg-cover bg-center bg-no-repeat bg-fixed"
+          className="bg-cover bg-fixed bg-center bg-no-repeat"
           style={{
             // backgroundImage: `${process.env.NEXT_PUBLIC_Client_URL}/Images/common-background.jpg`,
             backgroundImage:
@@ -89,7 +94,7 @@ export default async function RootLayout({
         >
           <Providers>
             <Toast />
-            <Header />
+            <Header sesssion={session} />
             {children}
             <Footer />
           </Providers>
