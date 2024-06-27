@@ -9,11 +9,11 @@ env:
   NODE_ENV: production
   NGINX_SITES_DIR: /etc/nginx/sites-available
   NGINX_SITES_ENABLED_DIR: /etc/nginx/sites-enabled
-  PROJECT_NAME: technoevo-server
-  PROJECT_DIR: /var/www/technoevo-server
+  PROJECT_NAME: technoevo
+  PROJECT_DIR: /var/www/technoevo
   EMAIL_NOTIFICATION: abdulra7manshaban@gmail.com
   SITE_DOMAIN: technoevo.site
-  BACKUP_DIR: /var/backups/technoevo-server
+  BACKUP_DIR: /var/backups/technoevo
 
 jobs:
   deploy:
@@ -23,14 +23,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          repository: Ftl-Erates/Erates-server-express
+          repository: 3bd0-shaban/TechnoEvo.git
           ref: master
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '20'
 
       - name: Backup Current Deployment
         run: |
@@ -46,7 +46,7 @@ jobs:
         run: |
           sudo mkdir -p ${{ env.PROJECT_DIR }}
           sudo cp -r ./* ${{ env.PROJECT_DIR }}
-          sudo cp .env.prod ${{ env.PROJECT_DIR }}/.env
+          sudo cp ${{ env.PROJECT_DIR }}/packages/technoevo-web/.env.prod ${{ env.PROJECT_DIR }}/.env.local
 
       - name: Install Dependencies
         run: sudo npm install
