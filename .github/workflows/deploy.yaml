@@ -9,11 +9,11 @@ env:
   NODE_ENV: production
   NGINX_SITES_DIR: /etc/nginx/sites-available
   NGINX_SITES_ENABLED_DIR: /etc/nginx/sites-enabled
-  PROJECT_NAME: ftlerates-server
-  PROJECT_DIR: /var/www/${{ env.PROJECT_NAME }}
+  PROJECT_NAME: technoevo-server
+  PROJECT_DIR: /var/www/technoevo-server
   EMAIL_NOTIFICATION: abdulra7manshaban@gmail.com
   SITE_DOMAIN: technoevo.site
-  BACKUP_DIR: /var/backups/${{ env.PROJECT_NAME }}
+  BACKUP_DIR: /var/backups/technoevo-server
 
 jobs:
   deploy:
