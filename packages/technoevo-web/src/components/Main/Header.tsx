@@ -6,6 +6,8 @@ import NavList from '../parts/NavList';
 import { BsMoon, BsSearch } from 'react-icons/bs';
 import { Session } from 'next-auth';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
+
 const Header: React.FC<{ sesssion: Session | null }> = ({ sesssion }) => {
   return (
     <div className="py-20">
@@ -24,15 +26,22 @@ const Header: React.FC<{ sesssion: Session | null }> = ({ sesssion }) => {
             </div>
           </div>
           <div className="flex max-w-[50%] items-center justify-between gap-5 divide-x-[1px] divide-gray-300">
-            <p className="text-sm text-gray-400">
+            <p className="flex items-center gap-5 text-sm text-gray-400">
               {sesssion?.role && <Link href="/admin/">Dashboard</Link>}
-              {!sesssion && (
+              {!sesssion ? (
                 <Link
                   href="/auth/signin"
                   className="font-medium text-red-500 underline"
                 >
                   Login
                 </Link>
+              ) : (
+                <button
+                  onClick={() => signOut()}
+                  className="font-medium text-black"
+                >
+                  Logout
+                </button>
               )}
             </p>
             <div className="flex items-center gap-5 pl-5">

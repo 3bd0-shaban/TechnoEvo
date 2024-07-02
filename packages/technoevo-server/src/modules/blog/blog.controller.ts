@@ -62,10 +62,10 @@ export class BlogController {
     @Body() inputs: CreateBlogDto,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<BlogEntity> {
-    const filePath = `images/${file.filename}`;
     if (!file) {
       throw new BadRequestException('Thumbnail is required');
     }
+    const filePath = `images/${file.filename}`;
     return this.blogService.create(inputs, filePath);
   }
 

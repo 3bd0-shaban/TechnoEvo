@@ -11,8 +11,8 @@ export async function refreshToken() {
       withCredentials: true,
     };
 
-    const response = await axios.get<{ accessToken: string }>(
-      `${url}/api/v1/auth/refresh`,
+    const response = await axios.get<{ access_token: string }>(
+      `${url}/api/auth/refreshToken`,
       headers,
     );
 

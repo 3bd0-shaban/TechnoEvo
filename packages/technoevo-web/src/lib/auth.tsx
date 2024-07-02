@@ -1,3 +1,4 @@
+import { setCookie } from 'cookies-next';
 import { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 const url = process.env.NEXT_PUBLIC_Server_APi;
@@ -38,6 +39,7 @@ export const authOptions: AuthOptions = {
         });
         const result = await res.json();
         if (res.ok && result) {
+          setCookie('access_token', result.access_token);
           return result;
         }
 

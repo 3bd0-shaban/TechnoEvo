@@ -1,5 +1,5 @@
 export interface iAuth {
-  accessToken: string;
+  access_token: string;
   expire_At: Date;
 }
 export interface iUser {

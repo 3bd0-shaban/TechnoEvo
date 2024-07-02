@@ -38,7 +38,6 @@
   height: 10px; /* Adjust the padding height as needed */
 }
 
-
 .pagination {
   display: flex;
   justify-content: center;
@@ -176,8 +175,17 @@
   background: var(--primary);
 }
 
+.arrow-up {
+  position: absolute;
+  top: -8px; /* Adjust as necessary to position the arrow */
+  left: 10px; /* Adjust as necessary to position the arrow */
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid white;
+}
 
 .form-Input {
-  @apply 
-  outline-none border rounded-md w-full h-10 px-4 focus:ring focus:ring-red-200 hover:border-red-500 duration-200 focus:border-red-500 placeholder:text-sm placeholder:text-gray-300
+  @apply h-10 w-full rounded-md border px-4 outline-none duration-200 placeholder:text-sm placeholder:text-gray-300 hover:border-red-500 focus:border-red-500 focus:ring focus:ring-red-200;
 }

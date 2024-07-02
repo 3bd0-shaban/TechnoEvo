@@ -2,17 +2,21 @@
 
 import React from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-// import { useDehydratedState } from 'use-dehydrated-state'
+import { AuthProvider } from '@/contexts/AuthContext';
+import { Session } from 'next-auth';
 
-function Providers({ children }: React.PropsWithChildren) {
+function Providers({
+  children,
+  session,
+}: {
+  children: React.ReactNode;
+  session: Session | null;
+}) {
   const [client] = React.useState(new QueryClient());
-  // const dehydratedState = useDehydratedState()
 
   return (
     <QueryClientProvider client={client}>
-      {/* <Hydrate state={dehydratedState}> */}
-      {children}
-      {/* </Hydrate> */}
+      <AuthProvider session={session}>{children}</AuthProvider>
     </QueryClientProvider>
   );
 }

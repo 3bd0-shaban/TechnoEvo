@@ -3,25 +3,25 @@ import { create } from 'zustand';
 
 type State = {
   local: string;
-  accessToken: string;
+  access_token: string;
   user: iUser;
 };
 
 type Actions = {
-  setCredentials: (user: iUser, accessToken: string) => void;
+  setCredentials: (user: iUser, access_token: string) => void;
   LogOut: () => void;
   setLocal: (value: string) => void;
 };
 
 export const useAuthStore = create<State & Actions>((set) => ({
   local: '',
-  accessToken: '',
+  access_token: '',
   user: {},
-  setCredentials: (user: iUser, accessToken: string) => {
-    set({ accessToken, user });
+  setCredentials: (user: iUser, access_token: string) => {
+    set({ access_token, user });
   },
   LogOut: () => {
-    set({ accessToken: '', user: {} });
+    set({ access_token: '', user: {} });
   },
   setLocal: (local: string) => {
     set({ local });

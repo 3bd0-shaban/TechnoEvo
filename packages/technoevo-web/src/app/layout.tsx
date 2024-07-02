@@ -92,10 +92,10 @@ export default async function RootLayout({
             minHeight: 'calc(100vh - var(--cs-wpadminbar-height))',
           }}
         >
-          <Providers>
+          <Providers session={session}>
             <Toast />
             <Header sesssion={session} />
-            {children}
+            <div className='px-5'>{children}</div>
             <Footer />
           </Providers>
         </div>

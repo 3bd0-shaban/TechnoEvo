@@ -20,6 +20,27 @@ export function useGetAllBlogsQuery({
     queryKey: ['Blog', page, limit],
   });
 }
+export function useAddNewBlogMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ data, thumbnail }: { data: iBlog; thumbnail: File }) =>
+      ApiEndpoint<string>(
+        {
+          method: 'POST',
+          url: `${url}/api/blog/create-blog`,
+          data: { ...data, thumbnail },
+        },
+        'multipart/form-data',
+      ),
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({
+        queryKey: ['MyInfo'],
+      });
+    },
+  });
+}
+
 export function useUpdateUserInfoMutation() {
   const queryClient = useQueryClient();
 
@@ -37,6 +58,7 @@ export function useUpdateUserInfoMutation() {
     },
   });
 }
+
 export function useUpdatePictureMutation() {
   const queryClient = useQueryClient();
 

@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi from 'joi';
 
 export const email = Joi.string()
   .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
@@ -47,7 +47,6 @@ export const number = Joi.string()
     'any.required': 'Phone number is a required field',
   });
 
-
 export const country = Joi.string().required().messages({
   'string.empty': 'Country cannot be left empty',
   'any.required': 'Country is a required field',
@@ -57,4 +56,31 @@ export const otp = Joi.string().min(6).required().messages({
   'string.min': 'otp should {#limit} numbers',
   'string.empty': 'otp cannot be left empty',
   // 'any.required': 'otp is a required field',
+});
+
+//Blog
+
+export const blog_Title = Joi.string().required().messages({
+  'string.empty': 'blog title cannot be left empty',
+  'any.required': 'blog title is a required field',
+});
+
+export const blog_des = Joi.string().required().messages({
+  'string.empty': 'blog describtion cannot be left empty',
+  'any.required': 'blog describtion is a required field',
+});
+
+export const categories = Joi.array()
+  .required()
+  .items(Joi.number().required())
+  .messages({
+    'string.empty': 'categories cannot be left empty',
+    'any.required': 'categories is a required field',
+  });
+
+//category
+
+export const category = Joi.string().required().messages({
+  'string.empty': 'category cannot be left empty',
+  'any.required': 'category is a required field',
 });
